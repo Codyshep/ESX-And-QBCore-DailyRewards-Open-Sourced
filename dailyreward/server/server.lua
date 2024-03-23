@@ -1,4 +1,5 @@
 ESX = exports['es_extended']:getSharedObject()
+
 -- Function to give items to a player in ESX
 local function giveItemsToPlayer(sourceId, item, count)
     local xPlayer = ESX.GetPlayerFromId(sourceId)
@@ -26,10 +27,13 @@ end
 
 -- Function to handle claiming of daily rewards
 local function claimDailyReward(sourceId, identifier)
-    local query = "SELECT * FROM daily_reward WHERE claimed = @identifier"
-    MySQL.Async.fetchScalar(query, {['@identifier'] = identifier}, function(result)
-        if result == nil then
-            -- Player not found in the table, insert the identifier
+    local currentTime = os.time()  -- Get current time in seconds
+
+    -- Check if player has claimed within the last 24 hours
+    local query = "SELECT claimtime FROM daily_reward WHERE claimed = @identifier"
+    MySQL.Async.fetchScalar(query, {['@identifier'] = identifier}, function(lastClaimTime)
+        if lastClaimTime == nil or (currentTime - lastClaimTime) >= 86400 then
+            -- Player is eligible to claim the reward
             local totalItems = #config.possibleitems
             local randomIndex = math.random(1, totalItems)
             local randomItemData = config.possibleitems[randomIndex]
@@ -38,24 +42,25 @@ local function claimDailyReward(sourceId, identifier)
 
             -- Give the item to the player
             if giveItemsToPlayer(sourceId, item, count) then
-                -- Item successfully added to inventory, insert the identifier into the database
-                local insertQuery = "INSERT INTO daily_reward (claimed) VALUES (@identifier)"
-                MySQL.Async.execute(insertQuery, {['@identifier'] = identifier}, function(rowsChanged)
+                -- Item successfully added to inventory, insert/update claimtime
+                local insertQuery = "INSERT INTO daily_reward (claimed, claimtime) VALUES (@identifier, @currentTime) ON DUPLICATE KEY UPDATE claimtime = @currentTime"
+                MySQL.Async.execute(insertQuery, {['@identifier'] = identifier, ['@currentTime'] = currentTime}, function(rowsChanged)
                     if rowsChanged > 0 then
-                        print("Identifier inserted into daily_reward table.")
+                        print("Claim time updated in daily_reward table.")
                     else
-                        print("Failed to insert identifier into daily_reward table.")
+                        print("Failed to update claim time in daily_reward table.")
                         TriggerClientEvent('DailyNotify', sourceId, 'Claim Failed: Database Error!', 2)
                     end
                 end)
             end
         else
-            -- Player found in the table, inform the player
-            print("Player already exists in daily_reward table.")
+            -- Player has already claimed within the last 24 hours
+            print("Player has already claimed within the last 24 hours.")
             TriggerClientEvent('DailyNotify', sourceId, 'Wait 24 Hours Before Trying Again!', 3)
         end
     end)
 end
+
 
 -- Event handler for claimDaily event
 RegisterServerEvent('claimDaily')
@@ -69,5 +74,3 @@ AddEventHandler('claimDaily', function()
         TriggerClientEvent('DailyNotify', sourceId, 'Claim Failed: Player Identifier Error!', 2)
     end
 end)
-
-
