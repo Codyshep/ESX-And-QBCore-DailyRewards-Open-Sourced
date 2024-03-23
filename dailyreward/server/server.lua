@@ -19,7 +19,7 @@ local function giveItemsToPlayer(sourceId, item, count)
             return false  -- Return false if player does not have enough space
         end
     else
-        print("Player not found in ESX database!")
+        print("Player not found in database!")
         TriggerClientEvent('DailyNotify', sourceId, 'Claim Failed: Player Not Found!', 2)
         return false  -- Return false if player is not found
     end
@@ -32,7 +32,7 @@ local function claimDailyReward(sourceId, identifier)
     -- Check if player has claimed within the last 24 hours
     local query = "SELECT claimtime FROM daily_reward WHERE claimed = @identifier"
     MySQL.Async.fetchScalar(query, {['@identifier'] = identifier}, function(lastClaimTime)
-        if lastClaimTime == nil or (currentTime - lastClaimTime) >= 86400 then
+        if lastClaimTime == nil or (currentTime - tonumber(lastClaimTime)) >= 86400 then
             -- Player is eligible to claim the reward
             local totalItems = #config.possibleitems
             local randomIndex = math.random(1, totalItems)
