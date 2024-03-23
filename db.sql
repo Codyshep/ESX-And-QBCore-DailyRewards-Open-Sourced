@@ -16,8 +16,12 @@
 
 -- Dumping structure for table ecxframework.daily_reward
 CREATE TABLE IF NOT EXISTS `daily_reward` (
-  `claimed` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `claimed` varchar(255) NOT NULL,
+  `claimtime` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `claimed` (`claimed`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- Data exporting was unselected.
 
