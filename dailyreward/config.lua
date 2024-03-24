@@ -1,3 +1,7 @@
+config = {}
+
+config.framework = 'esx' -- esx or qb
+
 config.rewarditems = {
     {
         item = 'money',
