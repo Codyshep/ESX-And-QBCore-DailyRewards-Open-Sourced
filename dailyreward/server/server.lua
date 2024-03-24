@@ -4,28 +4,28 @@ local frameworkset = false
 if framework == 'esx' then
     local resourceState = GetResourceState('es_extended')
     if resourceState ~= 'missing' then
-        print('^4'..GetCurrentResourceName()..' | ^2Framework = ESX')
+        print('^4'..GetCurrentResourceName()..' | ^2Framework = ESX^0')
         ESX = exports['es_extended']:getSharedObject()
         frameworkset = true
     else
-        print('^1'..GetCurrentResourceName()..' | Resource es_extended Not Found')
+        print('^1'..GetCurrentResourceName()..' | Resource es_extended Not Found^0')
     end
 end
 
 if framework == 'qb' then
     local resourceState = GetResourceState('qb-core')
     if resourceState ~= 'missing' then
-        print('^4'..GetCurrentResourceName()..' | ^2Framework = QBCore')
+        print('^4'..GetCurrentResourceName()..' | ^2Framework = QBCore^0')
         QBCore = exports['qb-core']:GetCoreObject()
         frameworkset = true
     else
-        print('^1'..GetCurrentResourceName()..' | Resource qb-core Not Found')
+        print('^1'..GetCurrentResourceName()..' | Resource qb-core Not Found^0')
     end
 end
 
 
 if frameworkset == true then
-    print('^2 FRAMEWORK SET... SCRIPT ON')
+    print('^2 FRAMEWORK SET... SCRIPT ON^0')
     -- Function to give items to a player in ESX
     local function giveItemsToPlayer(sourceId, item, count)
         if framework == 'esx' then
