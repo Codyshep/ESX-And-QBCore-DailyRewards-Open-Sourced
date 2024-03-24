@@ -7,7 +7,7 @@ AddEventHandler('DailyNotify', function(text, ntype)
     exports['notifications']:sendnotify(text, ntype, 6000)
 end)
 
-RegisterCommand("daily", function()
+RegisterCommand(config.command, function()
     isNuiOpen = not isNuiOpen
     SetNuiFocus(isNuiOpen, isNuiOpen)
     SendNUIMessage({
