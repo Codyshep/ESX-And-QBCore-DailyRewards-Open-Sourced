@@ -1,4 +1,3 @@
-#  THIS IS NOT COMPLETE YET I HAVE TO IMPLEMENT THE 24 RESET SYSTEM!
 # ESX-DailyRewards-Open-Sourced
 ## Open Sourced Daily Reward System!
 
