@@ -1,5 +1,7 @@
 config = {}
 
+config.command = 'daily'
+
 config.framework = 'esx' -- esx or qb
 
 config.rewarditems = {
