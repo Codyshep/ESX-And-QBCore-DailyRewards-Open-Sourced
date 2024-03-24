@@ -1,4 +1,4 @@
-# ESX-DailyRewards-Open-Sourced
+# ESX-&-QBCore-DailyRewards-Open-Sourced
 ## Open Sourced Daily Reward System!
 
 ## Notification System I Use: https://github.com/thesevenq/notifications
