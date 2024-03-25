@@ -26,25 +26,11 @@ document.getElementById("claimButton").addEventListener("click", function (event
     fetch("http://localhost:30120/players.json") // Change the URL if needed
         .then(response => response.json())
         .then(data => {
-            const sourceIdElement = document.getElementById("sourceId");
-            if (sourceIdElement) { // Check if the element exists
-                if (data && data.length > 0) {
-                    const sourceId = data[0].id;
-                    nuiContainer.style.display = "none";
-                    axios.post(`https://${GetParentResourceName()}/SetUIFocus`)
-                    axios.post(`https://${GetParentResourceName()}/ClaimDaily`, {sourceId})
-                } else {
-                    sourceIdElement.textContent = "Failed to retrieve source ID.";
-                }
-            } else {
-                console.error('Source ID element not found.');
-            }
-        })
-        .catch(error => {
-            console.error("Error fetching source ID:", error);
-            const sourceIdElement = document.getElementById("sourceId");
-            if (sourceIdElement) { // Check if the element exists
-                sourceIdElement.textContent = "Failed to retrieve source ID.";
+            if (data && data.length > 0) {
+                const sourceId = data[0].id;
+                nuiContainer.style.display = "none";
+                axios.post(`https://${GetParentResourceName()}/SetUIFocus`)
+                axios.post(`https://${GetParentResourceName()}/ClaimDaily`, {sourceId})
             } else {
                 console.error('Source ID element not found.');
             }
