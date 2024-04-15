@@ -25,7 +25,7 @@ RegisterNUICallback('SetUIFocus', function(data, cb)
 end)
 
 RegisterNUICallback('ClaimDaily', function(data, cb)
-    local source = data.sourceId
+    local source = GetPlayerServerId(PlayerId())
     TriggerServerEvent('claimDaily', source)
     cb({})
 end)
